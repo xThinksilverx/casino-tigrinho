@@ -44,7 +44,7 @@ const CasinoApp = () => {
   const spin = () => {
     if (spinning || credits < bet) {
       if (credits < bet) {
-        setMessage('❌ Créditos insuficientes!');
+        setMessage('❌ Acabou o dinheiro filho!');
       }
       return;
     }
@@ -128,7 +128,7 @@ const CasinoApp = () => {
               onClick={() => setScreen('slot')}
               className="w-full py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl text-xl font-bold shadow-lg transition-all transform hover:scale-105"
             >
-              🎰 JOGAR SLOTS
+              🎰 JOGAR
             </button>
             
             <button
