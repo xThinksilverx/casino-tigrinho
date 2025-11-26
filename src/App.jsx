@@ -111,10 +111,10 @@ const CasinoApp = () => {
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-900 flex items-center justify-center p-4">
         <div className="bg-gradient-to-b from-yellow-600 to-yellow-800 rounded-3xl p-8 shadow-2xl max-w-md w-full border-8 border-yellow-500">
           <h1 className="text-5xl font-bold text-white text-center mb-2 drop-shadow-lg">
-            🐯 CASINO DO
+            CASSINO DO
           </h1>
           <h2 className="text-6xl font-bold text-white text-center mb-8 drop-shadow-lg animate-pulse">
-            TIGRINHO
+            TIGRINHO 🐯 
           </h2>
           
           <div className="bg-black bg-opacity-50 rounded-lg p-4 mb-6">
@@ -148,7 +148,7 @@ const CasinoApp = () => {
 
           <div className="mt-6 bg-black bg-opacity-40 rounded-xl p-4">
             <p className="text-yellow-300 text-center text-sm">
-              ⚠️ Este é um jogo de entretenimento
+              ⚠️ Este é um jogo de entretenimento, que a linda professora Claudia pediu e os seus queridos alunos Caio, Kaio e Otavio.
             </p>
           </div>
         </div>
