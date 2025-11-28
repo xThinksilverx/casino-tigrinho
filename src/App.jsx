@@ -12,6 +12,8 @@ const CasinoApp = () => {
   const [totalBet, setTotalBet] = useState(0);
   const [totalWon, setTotalWon] = useState(0);
   const [luckyMode, setLuckyMode] = useState(false);
+  const [unluckyMode, setUnluckyMode] = useState(false);
+  const [kaioMode, setKaioMode] = useState(false);
 
   const symbols = ['🐯', '💰', '🍒', '🍋', '💎', '⭐', '🎰', '🔔'];
   const [reels, setReels] = useState(['🐯', '🐯', '🐯']);
@@ -49,6 +51,22 @@ const CasinoApp = () => {
       return;
     }
 
+    // Easter egg do Kaio - se apostar 30 com modo Kaio ativado
+    if (kaioMode && bet === 30) {
+      setSpinning(true);
+      setMessage('🎰 Girando...');
+      
+      setTimeout(() => {
+        setMessage('Algo de estranho aconeteceu...');
+        setTimeout(() => {
+          window.open('https://www.youtube.com/watch?v=_D6Zi9OlUVM', '_blank');
+          setSpinning(false);
+          setKaioMode(false);
+        }, 1500);
+      }, 2000);
+      return;
+    }
+
     setSpinning(true);
     const newCredits = credits - bet;
     setCredits(newCredits);
@@ -65,7 +83,15 @@ const CasinoApp = () => {
       if (spinCount >= 20) {
         clearInterval(spinInterval);
         
-        const finalReels = luckyMode ? ['🐯', '🐯', '🐯'] : [getRandomSymbol(), getRandomSymbol(), getRandomSymbol()];
+        let finalReels;
+        if (luckyMode) {
+          finalReels = ['🐯', '🐯', '🐯'];
+        } else if (unluckyMode) {
+          // Garante que nunca haverá combinação vencedora
+          finalReels = [symbols[0], symbols[1], symbols[2]];
+        } else {
+          finalReels = [getRandomSymbol(), getRandomSymbol(), getRandomSymbol()];
+        }
         setReels(finalReels);
         
         const result = checkWin(finalReels);
@@ -104,6 +130,8 @@ const CasinoApp = () => {
     setTotalWon(0);
     setMessage('Boa sorte! 🍀');
     setLuckyMode(false);
+    setUnluckyMode(false);
+    setKaioMode(false);
   };
 
   if (screen === 'menu') {
@@ -155,7 +183,21 @@ const CasinoApp = () => {
               >
                 Claudia
               </span>
-              {' '}pediu e os seus queridos alunos Caio, Kaio e Otavio.
+              {' '}pediu e os seus queridos alunos{' '}
+              <span 
+                onClick={() => setUnluckyMode(true)}
+                className="cursor-default"
+              >
+                Caio
+              </span>
+              ,{' '}
+              <span 
+                onClick={() => setKaioMode(true)}
+                className="cursor-default"
+              >
+                Kaio
+              </span>
+              {' '}e Otavio.
             </p>
           </div>
         </div>
@@ -228,8 +270,8 @@ const CasinoApp = () => {
             </div>
           </div>
 
-          <div className="bg-black bg-opacity-50 rounded-xl p-4">
-            <h3 className="text-yellow-300 font-bold mb-4 flex items-center gap-2">
+          <div className="b00 font-bold mb-4g-black bg-opacity-50 rounded-xl p-4">
+            <h3 className="text-yellow-3 flex items-center gap-2">
               <TrendingUp size={20} /> Evolução do Capital
             </h3>
             <ResponsiveContainer width="100%" height={250}>
@@ -326,7 +368,7 @@ const CasinoApp = () => {
           <label className="text-white font-bold block mb-2 text-center">
             💵 Aposta: {bet}
           </label>
-          <div className="flex gap-2 justify-center">
+          <div className="flex gap-2 justify-center mb-2">
             <button
               onClick={() => setBet(Math.max(10, bet - 10))}
               className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold"
@@ -356,6 +398,13 @@ const CasinoApp = () => {
               +10
             </button>
           </div>
+          <button
+            onClick={() => setBet(credits)}
+            className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-4 py-2 rounded-lg font-bold transition-all transform hover:scale-105"
+            disabled={spinning}
+          >
+            🔥 ALL-IN
+          </button>
         </div>
 
         <button
