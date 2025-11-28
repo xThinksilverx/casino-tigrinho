@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { TrendingUp, BarChart3, Trophy, ArrowLeft } from 'lucide-react';
 
 const CasinoApp = () => {
-  const [screen, setScreen] = useState('menu'); // menu, slot, stats
+  const [screen, setScreen] = useState('menu');
   const [credits, setCredits] = useState(1000);
   const [history, setHistory] = useState([{ spin: 0, balance: 1000 }]);
   const [totalSpins, setTotalSpins] = useState(0);
@@ -11,8 +11,8 @@ const CasinoApp = () => {
   const [biggestWin, setBiggestWin] = useState(0);
   const [totalBet, setTotalBet] = useState(0);
   const [totalWon, setTotalWon] = useState(0);
+  const [luckyMode, setLuckyMode] = useState(false);
 
-  // Slot Machine States
   const symbols = ['🐯', '💰', '🍒', '🍋', '💎', '⭐', '🎰', '🔔'];
   const [reels, setReels] = useState(['🐯', '🐯', '🐯']);
   const [spinning, setSpinning] = useState(false);
@@ -65,7 +65,7 @@ const CasinoApp = () => {
       if (spinCount >= 20) {
         clearInterval(spinInterval);
         
-        const finalReels = [getRandomSymbol(), getRandomSymbol(), getRandomSymbol()];
+        const finalReels = luckyMode ? ['🐯', '🐯', '🐯'] : [getRandomSymbol(), getRandomSymbol(), getRandomSymbol()];
         setReels(finalReels);
         
         const result = checkWin(finalReels);
@@ -103,9 +103,9 @@ const CasinoApp = () => {
     setTotalBet(0);
     setTotalWon(0);
     setMessage('Boa sorte! 🍀');
+    setLuckyMode(false);
   };
 
-  // Menu Screen
   if (screen === 'menu') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-900 flex items-center justify-center p-4">
@@ -148,7 +148,14 @@ const CasinoApp = () => {
 
           <div className="mt-6 bg-black bg-opacity-40 rounded-xl p-4">
             <p className="text-yellow-300 text-center text-sm">
-              ⚠️ Este é um jogo de entretenimento, que a linda professora Claudia pediu e os seus queridos alunos Caio, Kaio e Otavio.
+              ⚠️ Este é um jogo de entretenimento, que a linda professora{' '}
+              <span 
+                onClick={() => setLuckyMode(true)}
+                className="cursor-default"
+              >
+                Claudia
+              </span>
+              {' '}pediu e os seus queridos alunos Caio, Kaio e Otavio.
             </p>
           </div>
         </div>
@@ -156,7 +163,6 @@ const CasinoApp = () => {
     );
   }
 
-  // Statistics Screen
   if (screen === 'stats') {
     const winRate = totalSpins > 0 ? ((totalWins / totalSpins) * 100).toFixed(1) : 0;
     const netProfit = credits - 1000;
@@ -179,7 +185,6 @@ const CasinoApp = () => {
             <div className="w-24"></div>
           </div>
 
-          {/* Stats Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-black bg-opacity-50 rounded-xl p-4 text-center">
               <p className="text-yellow-300 text-sm mb-1">Saldo Atual</p>
@@ -202,7 +207,6 @@ const CasinoApp = () => {
             </div>
           </div>
 
-          {/* Additional Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-black bg-opacity-50 rounded-xl p-4 text-center">
               <p className="text-yellow-300 text-sm mb-1">Lucro Líquido</p>
@@ -224,7 +228,6 @@ const CasinoApp = () => {
             </div>
           </div>
 
-          {/* Chart */}
           <div className="bg-black bg-opacity-50 rounded-xl p-4">
             <h3 className="text-yellow-300 font-bold mb-4 flex items-center gap-2">
               <TrendingUp size={20} /> Evolução do Capital
@@ -261,7 +264,6 @@ const CasinoApp = () => {
     );
   }
 
-  // Slot Machine Screen
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-900 flex items-center justify-center p-4">
       <div className="bg-gradient-to-b from-yellow-600 to-yellow-800 rounded-3xl p-8 shadow-2xl max-w-md w-full border-8 border-yellow-500">
