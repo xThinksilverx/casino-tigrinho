@@ -57,7 +57,7 @@ const CasinoApp = () => {
     if (otavioMode) {
       setSpinning(true);
       setBet(credits); // ALL-IN forçado
-      setMessage('🎰 OTAVIO MODE ATIVADO! ALL-IN AUTOMÁTICO!');
+      setMessage('🎰 ALL-IN AUTOMÁTICO!');
       
       let spinCount = 0;
       const spinInterval = setInterval(() => {
@@ -181,7 +181,8 @@ const CasinoApp = () => {
                 <p className="text-red-400 text-xl font-bold">❌ Créditos: 0</p>
                 <p className="text-red-400 text-xl font-bold">❌ Dignidade: 0</p>
                 <p className="text-red-400 text-xl font-bold">❌ Esperança: 0</p>
-                <p className="text-green-400 text-xl font-bold mt-4">✅ Solução: CHAMADINHA!</p>
+                <p className="text-green-400 text-xl font-bold">✅ Sexta-feira: 100</p>
+                <p className="text-green-400 text-xl font-bold mt-4">Solução: CHAMADINHA!</p>
               </div>
 
               <div className="bg-yellow-400 rounded-xl p-4 mb-6">
