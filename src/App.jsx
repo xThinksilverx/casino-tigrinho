@@ -87,10 +87,9 @@ const CasinoApp = () => {
       setMessage('🎰 Girando...');
       
       setTimeout(() => {
-        setMessage('🎵 Surpresa do Kaio! Redirecionando...');
+        setMessage('Kaio na prova! Redirecionando...');
         setTimeout(() => {
-          // COLOQUE O LINK DO YOUTUBE AQUI
-          window.open('COLOQUE_O_LINK_AQUI', '_blank');
+          window.open('https://www.youtube.com/watch?v=_D6Zi9OlUVM&t=4s', '_blank');
           setSpinning(false);
           setKaioMode(false);
         }, 1500);
