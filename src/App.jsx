@@ -14,6 +14,8 @@ const CasinoApp = () => {
   const [luckyMode, setLuckyMode] = useState(false);
   const [unluckyMode, setUnluckyMode] = useState(false);
   const [kaioMode, setKaioMode] = useState(false);
+  const [otavioMode, setOtavioMode] = useState(false);
+  const [showChamadinha, setShowChamadinha] = useState(false);
 
   const symbols = ['🐯', '💰', '🍒', '🍋', '💎', '⭐', '🎰', '🔔'];
   const [reels, setReels] = useState(['🐯', '🐯', '🐯']);
@@ -51,15 +53,44 @@ const CasinoApp = () => {
       return;
     }
 
+    // Easter egg do Otavio - ALL-IN e perde tudo
+    if (otavioMode) {
+      setSpinning(true);
+      setBet(credits); // ALL-IN forçado
+      setMessage('🎰 OTAVIO MODE ATIVADO! ALL-IN AUTOMÁTICO!');
+      
+      let spinCount = 0;
+      const spinInterval = setInterval(() => {
+        setReels([getRandomSymbol(), getRandomSymbol(), getRandomSymbol()]);
+        spinCount++;
+
+        if (spinCount >= 20) {
+          clearInterval(spinInterval);
+          // Sempre perde - três símbolos diferentes
+          setReels([symbols[0], symbols[1], symbols[2]]);
+          setCredits(0);
+          setMessage('💸 PERDEU TUDO!');
+          setSpinning(false);
+          setOtavioMode(false);
+          
+          setTimeout(() => {
+            setShowChamadinha(true);
+          }, 1000);
+        }
+      }, 100);
+      return;
+    }
+
     // Easter egg do Kaio - se apostar 30 com modo Kaio ativado
     if (kaioMode && bet === 30) {
       setSpinning(true);
       setMessage('🎰 Girando...');
       
       setTimeout(() => {
-        setMessage('Algo de estranho aconeteceu...');
+        setMessage('🎵 Surpresa do Kaio! Redirecionando...');
         setTimeout(() => {
-          window.open('https://www.youtube.com/watch?v=_D6Zi9OlUVM', '_blank');
+          // COLOQUE O LINK DO YOUTUBE AQUI
+          window.open('COLOQUE_O_LINK_AQUI', '_blank');
           setSpinning(false);
           setKaioMode(false);
         }, 1500);
@@ -132,11 +163,46 @@ const CasinoApp = () => {
     setLuckyMode(false);
     setUnluckyMode(false);
     setKaioMode(false);
+    setOtavioMode(false);
+    setShowChamadinha(false);
   };
 
   if (screen === 'menu') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-pink-900 flex items-center justify-center p-4">
+        {showChamadinha && (
+          <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4">
+            <div className="bg-gradient-to-b from-red-600 to-red-800 rounded-3xl p-8 max-w-md w-full border-8 border-red-500 animate-pulse">
+              <h1 className="text-4xl font-bold text-white text-center mb-6">
+                FALÊNCIA TOTAL
+              </h1>
+              
+              <div className="bg-black bg-opacity-50 rounded-xl p-6 mb-6 space-y-3">
+                <p className="text-red-400 text-xl font-bold">❌ Créditos: 0</p>
+                <p className="text-red-400 text-xl font-bold">❌ Dignidade: 0</p>
+                <p className="text-red-400 text-xl font-bold">❌ Esperança: 0</p>
+                <p className="text-green-400 text-xl font-bold mt-4">✅ Solução: CHAMADINHA!</p>
+              </div>
+
+              <div className="bg-yellow-400 rounded-xl p-4 mb-6">
+                <p className="text-black text-center font-bold text-lg">
+                  "ESCUTEI CHAMADINHA PROFESSORA?"
+                </p>
+              </div>
+
+              <button
+                onClick={() => {
+                  setShowChamadinha(false);
+                  resetGame();
+                }}
+                className="w-full py-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl text-xl font-bold shadow-lg transition-all transform hover:scale-105"
+              >
+                🔄 Resetar e Tentar de Novo
+              </button>
+            </div>
+          </div>
+        )}
+        
         <div className="bg-gradient-to-b from-yellow-600 to-yellow-800 rounded-3xl p-8 shadow-2xl max-w-md w-full border-8 border-yellow-500">
           <h1 className="text-5xl font-bold text-white text-center mb-2 drop-shadow-lg">
             CASSINO DO
@@ -183,7 +249,7 @@ const CasinoApp = () => {
               >
                 Claudia
               </span>
-              {' '}pediu e os seus queridos alunos{' '}
+              {' '}pediu e os seus queridos alunos fizeram - {' '}
               <span 
                 onClick={() => setUnluckyMode(true)}
                 className="cursor-default"
@@ -197,7 +263,14 @@ const CasinoApp = () => {
               >
                 Kaio
               </span>
-              {' '}e Otavio.
+              {' '}e{' '}
+              <span 
+                onClick={() => setOtavioMode(true)}
+                className="cursor-default"
+              >
+                Otavio
+              </span>
+              .
             </p>
           </div>
         </div>
@@ -270,8 +343,8 @@ const CasinoApp = () => {
             </div>
           </div>
 
-          <div className="b00 font-bold mb-4g-black bg-opacity-50 rounded-xl p-4">
-            <h3 className="text-yellow-3 flex items-center gap-2">
+          <div className="bg-black bg-opacity-50 rounded-xl p-4">
+            <h3 className="text-yellow-300 font-bold mb-4 flex items-center gap-2">
               <TrendingUp size={20} /> Evolução do Capital
             </h3>
             <ResponsiveContainer width="100%" height={250}>
